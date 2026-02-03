@@ -2,11 +2,20 @@ package com.ticker.dto;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+
+
+@Entity
 public class TaskDto {
+	@Id
 	 private Long id;
 	    private String name;
 	    private LocalDate dueDate;
 	    private int priority;
+	    @Enumerated(EnumType.STRING)
 	    private Status status;
 
 	    public enum Status {
