@@ -7,20 +7,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.springframework.scheduling.config.Task;
+import org.springframework.core.task.TaskRejectedException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.ticker.dto.TaskDto;
 import com.ticker.globalExcepion.TaskNotFoundException;
+import com.ticker.repository.TaskRepository;
 
 @Service
 public class TaskService {
+	
+	
 
     private final Map<Long, TaskDto> tasks = new HashMap<>();
     private final AtomicLong idGenerator = new AtomicLong();
+    private TaskRepository taskRepository;
+    
+    
+    TaskService(TaskRepository taskRepository){
+    	this.taskRepository=taskRepository;
+    	
+    }
 
-    public List<TaskDto> getAll() {
-        return new ArrayList<>(tasks.values());
+    public Page<TaskDto> getAll(int page, int size) {
+    	PageRequest of = PageRequest.of(page, size);
+    	return taskRepository.findAll(of);
     }
 
     public TaskDto getById(Long id) {
